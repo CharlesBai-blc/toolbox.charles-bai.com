@@ -70,6 +70,45 @@
   border: 1px solid #6b9fc8;
 }
 
+.card-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card-detail-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card-detail-edit {
+  background: #8ab4f8;
+  color: #202124;
+}
+
+.card-detail-edit:hover {
+  background: #aecbfa;
+}
+
+.card-detail-delete {
+  background: #ea4335;
+  color: #e8eaed;
+}
+
+.card-detail-delete:hover:not(:disabled) {
+  background: #c5221f;
+}
+
+.card-detail-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .card-detail-close {
   background: transparent;
   border: none;

@@ -5,16 +5,18 @@ import { FilterBar } from './components/FilterBar';
 import { CardGrid } from './components/CardGrid';
 import { Pagination } from './components/Pagination';
 import { CardDetail } from './components/CardDetail';
+import { CardFormModal } from './components/CardFormModal';
 import type { Card } from './types/card';
 import './App.css';
 
 function App() {
-  const { cards, allTags } = useCards();
+  const { cards, allTags, loading, error, refetch } = useCards();
   const { filters, filteredAndSortedCards, updateFilters, resetFilters } = useFilters(cards);
   
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Calculate pagination
   const paginatedCards = useMemo(() => {
@@ -34,39 +36,78 @@ function App() {
     setCurrentPage(1);
   };
 
+  const handleCardCreated = async () => {
+    await refetch();
+  };
+
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Chuck's Programming Toolbox</h1>
-        <p className="app-subtitle">A collection of algorithms, patterns, and techniques for LeetCode-style problems</p>
+        <div className="app-header-content">
+          <div>
+            <h1>Chuck's Programming Toolbox</h1>
+            <p className="app-subtitle">A collection of algorithms, patterns, and techniques for LeetCode-style problems</p>
+          </div>
+          <button
+            className="app-create-button"
+            onClick={() => setShowCreateModal(true)}
+          >
+            + Create Card
+          </button>
+        </div>
       </header>
 
       <main className="app-main">
-        <FilterBar
-          filters={filters}
-          allTags={allTags}
-          onFiltersChange={handleFiltersChange}
-          onReset={handleReset}
-        />
+        {loading && (
+          <div className="app-loading">
+            <p>Loading cards...</p>
+          </div>
+        )}
 
-        <CardGrid cards={paginatedCards} onCardClick={setSelectedCard} />
+        {error && (
+          <div className="app-error">
+            <p>Error: {error}</p>
+            <button onClick={() => refetch()}>Retry</button>
+          </div>
+        )}
 
-        <Pagination
-          totalItems={filteredAndSortedCards.length}
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          onItemsPerPageChange={(newItemsPerPage) => {
-            setItemsPerPage(newItemsPerPage);
-            setCurrentPage(1);
-          }}
-        />
+        {!loading && !error && (
+          <>
+            <FilterBar
+              filters={filters}
+              allTags={allTags}
+              onFiltersChange={handleFiltersChange}
+              onReset={handleReset}
+            />
+
+            <CardGrid cards={paginatedCards} onCardClick={setSelectedCard} />
+
+            <Pagination
+              totalItems={filteredAndSortedCards.length}
+              itemsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={(newItemsPerPage) => {
+                setItemsPerPage(newItemsPerPage);
+                setCurrentPage(1);
+              }}
+            />
+          </>
+        )}
       </main>
 
       {selectedCard && (
         <CardDetail
           card={selectedCard}
           onClose={() => setSelectedCard(null)}
+          onCardUpdated={handleCardCreated}
+        />
+      )}
+
+      {showCreateModal && (
+        <CardFormModal
+          onClose={() => setShowCreateModal(false)}
+          onSuccess={handleCardCreated}
         />
       )}
     </div>

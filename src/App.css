@@ -8,8 +8,20 @@
   border-bottom: none;
   color: #e8eaed;
   padding: 2rem 1rem;
-  text-align: center;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.app-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-header-content > div {
+  text-align: left;
 }
 
 .app-header h1 {
@@ -27,6 +39,49 @@
   font-weight: 400;
 }
 
+.app-create-button {
+  padding: 0.75rem 1.5rem;
+  background: #8ab4f8;
+  color: #202124;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.app-create-button:hover {
+  background: #aecbfa;
+}
+
+.app-loading,
+.app-error {
+  text-align: center;
+  padding: 3rem;
+  color: #bdc1c6;
+}
+
+.app-error {
+  color: #f28b82;
+}
+
+.app-error button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #8ab4f8;
+  color: #202124;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.app-error button:hover {
+  background: #aecbfa;
+}
+
 .app-main {
   max-width: 1400px;
   margin: 0 auto;
@@ -36,6 +91,19 @@
 @media (max-width: 768px) {
   .app-header {
     padding: 1rem 0.75rem;
+  }
+
+  .app-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-header-content > div {
+    width: 100%;
+  }
+
+  .app-create-button {
+    width: 100%;
   }
 
   .app-header h1 {

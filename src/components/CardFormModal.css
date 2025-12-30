@@ -1,0 +1,187 @@
+.card-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.card-form-container {
+  background: #303134;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+
+.card-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #5f6368;
+}
+
+.card-form-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #e8eaed;
+}
+
+.card-form-close {
+  background: transparent;
+  border: none;
+  color: #9aa0a6;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.card-form-close:hover {
+  color: #e8eaed;
+}
+
+.card-form {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.card-form-error {
+  background: #5c2b29;
+  color: #f28b82;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.card-form-section {
+  margin-bottom: 1.5rem;
+}
+
+.card-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.card-form-label {
+  display: block;
+  font-weight: 500;
+  color: #bdc1c6;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.card-form-label .required {
+  color: #ea4335;
+}
+
+.card-form-input,
+.card-form-select,
+.card-form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #5f6368;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background: #202124;
+  color: #e8eaed;
+  font-family: 'Roboto Mono', monospace;
+  transition: all 0.2s;
+}
+
+.card-form-input:focus,
+.card-form-select:focus,
+.card-form-textarea:focus {
+  outline: none;
+  border-color: #8ab4f8;
+  box-shadow: 0 0 0 1px #8ab4f8;
+  background: #303134;
+}
+
+.card-form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.card-form-select {
+  cursor: pointer;
+}
+
+.card-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #5f6368;
+}
+
+.card-form-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.card-form-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card-form-button-cancel {
+  background: #5f6368;
+  color: #e8eaed;
+}
+
+.card-form-button-cancel:hover:not(:disabled) {
+  background: #70757a;
+}
+
+.card-form-button-submit {
+  background: #8ab4f8;
+  color: #202124;
+}
+
+.card-form-button-submit:hover:not(:disabled) {
+  background: #aecbfa;
+}
+
+@media (max-width: 768px) {
+  .card-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .card-form-container {
+    max-height: 95vh;
+  }
+
+  .card-form {
+    padding: 1.5rem;
+  }
+}
+

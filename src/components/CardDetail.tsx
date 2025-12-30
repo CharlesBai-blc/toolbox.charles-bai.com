@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import type { Card } from '../types/card';
+import { CardFormModal } from './CardFormModal';
+import { deleteCard } from '../services/cardService';
 import './CardDetail.css';
 
 interface CardDetailProps {
   card: Card;
   onClose: () => void;
+  onCardUpdated?: () => void;
 }
 
 type Section = 'code' | 'explanation' | 'leetcode' | 'examples' | 'related';
 
-export function CardDetail({ card, onClose }: CardDetailProps) {
+export function CardDetail({ card, onClose, onCardUpdated }: CardDetailProps) {
   const [activeSection, setActiveSection] = useState<Section>('code');
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const getDifficultyColor = (difficulty?: string) => {
     switch (difficulty) {
@@ -23,6 +29,39 @@ export function CardDetail({ card, onClose }: CardDetailProps) {
 
   const getClassificationLabel = (classification: string) => {
     return classification.charAt(0).toUpperCase() + classification.slice(1);
+  };
+
+  const handleEdit = () => {
+    setShowEditModal(true);
+  };
+
+  const handleDelete = async () => {
+    if (!showDeleteConfirm) {
+      setShowDeleteConfirm(true);
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await deleteCard(card.id);
+      onClose();
+      if (onCardUpdated) {
+        onCardUpdated();
+      }
+    } catch (error) {
+      console.error('Error deleting card:', error);
+      alert('Failed to delete card. Please try again.');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const handleCardUpdated = async () => {
+    setShowEditModal(false);
+    if (onCardUpdated) {
+      onCardUpdated();
+    }
   };
 
   const sections: { id: Section; label: string }[] = [
@@ -142,7 +181,22 @@ export function CardDetail({ card, onClose }: CardDetailProps) {
               )}
             </div>
           </div>
-          <button className="card-detail-close" onClick={onClose}>×</button>
+          <div className="card-detail-actions">
+            <button
+              className="card-detail-button card-detail-edit"
+              onClick={handleEdit}
+            >
+              Edit
+            </button>
+            <button
+              className="card-detail-button card-detail-delete"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {showDeleteConfirm ? (isDeleting ? 'Deleting...' : 'Confirm Delete') : 'Delete'}
+            </button>
+            <button className="card-detail-close" onClick={onClose}>×</button>
+          </div>
         </div>
 
         <div className="card-detail-body">
@@ -163,6 +217,14 @@ export function CardDetail({ card, onClose }: CardDetailProps) {
           </div>
         </div>
       </div>
+
+      {showEditModal && (
+        <CardFormModal
+          card={card}
+          onClose={() => setShowEditModal(false)}
+          onSuccess={handleCardUpdated}
+        />
+      )}
     </div>
   );
 }
