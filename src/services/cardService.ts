@@ -16,6 +16,7 @@ interface DatabaseCard {
   use_cases: string[] | null;
   related_problems: string[] | null;
   date_added: string | null;
+  language: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -36,6 +37,7 @@ function dbToCard(dbCard: DatabaseCard): Card {
     useCases: dbCard.use_cases || undefined,
     relatedProblems: dbCard.related_problems || undefined,
     dateAdded: dbCard.date_added || undefined,
+    language: dbCard.language as Card['language'] || undefined,
   };
 }
 
@@ -54,6 +56,7 @@ function cardToDb(card: Omit<Card, 'id'> & { id?: string }): Omit<DatabaseCard, 
     use_cases: card.useCases || null,
     related_problems: card.relatedProblems || null,
     date_added: card.dateAdded || null,
+    language: card.language || null,
   };
 }
 
@@ -106,6 +109,7 @@ export async function updateCard(id: string, updates: Partial<Omit<Card, 'id'>>)
   if (updates.useCases !== undefined) updateData.use_cases = updates.useCases || null;
   if (updates.relatedProblems !== undefined) updateData.related_problems = updates.relatedProblems || null;
   if (updates.dateAdded !== undefined) updateData.date_added = updates.dateAdded || null;
+  if (updates.language !== undefined) updateData.language = updates.language || null;
 
   const { data, error } = await supabase
     .from('cards')

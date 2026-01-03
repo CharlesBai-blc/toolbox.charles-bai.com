@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import type { Card, CardClassification, CardDifficulty, Method } from '../types/card';
+import type { Card, CardClassification, CardDifficulty, CardLanguage, Method } from '../types/card';
 import { useAuth } from '../hooks/useAuth';
 import { createCard, updateCard } from '../services/cardService';
 import { AuthModal } from './AuthModal';
+import { getBoilerplate, isBoilerplateOnly } from '../utils/codeBoilerplate';
 import './CardFormModal.css';
 
 interface CardFormModalProps {
@@ -13,6 +14,7 @@ interface CardFormModalProps {
 
 const classifications: CardClassification[] = ['sorts', 'searches', 'algorithms', 'heuristics', 'patterns', 'data-structures'];
 const difficulties: CardDifficulty[] = ['easy', 'medium', 'hard'];
+const languages: CardLanguage[] = ['python', 'javascript', 'java', 'cpp', 'c', 'go', 'rust'];
 
 export function CardFormModal({ card, onClose, onSuccess }: CardFormModalProps) {
   const { isAuthenticated } = useAuth();
@@ -21,11 +23,13 @@ export function CardFormModal({ card, onClose, onSuccess }: CardFormModalProps) 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const initialLanguage: CardLanguage = card?.language || 'python';
   const [formData, setFormData] = useState({
     title: card?.title || '',
     classification: card?.classification || 'algorithms' as CardClassification,
     difficulty: card?.difficulty || '' as CardDifficulty | '',
-    code: card?.code || '',
+    language: initialLanguage,
+    code: card?.code || (isEditing ? '' : getBoilerplate(initialLanguage)),
     explanation: card?.explanation || '',
     timeComplexity: card?.timeComplexity || '',
     spaceComplexity: card?.spaceComplexity || '',
@@ -67,6 +71,7 @@ export function CardFormModal({ card, onClose, onSuccess }: CardFormModalProps) 
         title: formData.title.trim(),
         classification: formData.classification,
         difficulty: formData.difficulty || undefined,
+        language: formData.language,
         code: formData.code.trim(),
         explanation: formData.explanation.trim(),
         timeComplexity: formData.classification === 'data-structures' ? undefined : (formData.timeComplexity.trim() || undefined),
@@ -104,6 +109,17 @@ export function CardFormModal({ card, onClose, onSuccess }: CardFormModalProps) 
         newData.methods = [];
       }
       return newData;
+    });
+  };
+
+  const handleLanguageChange = (language: CardLanguage) => {
+    setFormData(prev => {
+      // If code is empty or just boilerplate, replace with new boilerplate
+      if (!prev.code.trim() || isBoilerplateOnly(prev.code, prev.language)) {
+        return { ...prev, language, code: getBoilerplate(language) };
+      }
+      // Otherwise, just update the language
+      return { ...prev, language };
     });
   };
 
@@ -201,6 +217,24 @@ export function CardFormModal({ card, onClose, onSuccess }: CardFormModalProps) 
                 {difficulties.map(diff => (
                   <option key={diff} value={diff}>
                     {diff.charAt(0).toUpperCase() + diff.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="card-form-section">
+              <label className="card-form-label">
+                Language <span className="required">*</span>
+              </label>
+              <select
+                value={formData.language}
+                onChange={(e) => handleLanguageChange(e.target.value as CardLanguage)}
+                required
+                className="card-form-select"
+              >
+                {languages.map(lang => (
+                  <option key={lang} value={lang}>
+                    {lang === 'cpp' ? 'C++' : lang === 'c' ? 'C' : lang.charAt(0).toUpperCase() + lang.slice(1)}
                   </option>
                 ))}
               </select>
