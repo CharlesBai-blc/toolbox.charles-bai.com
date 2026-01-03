@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { CardFormModal } from './CardFormModal';
 import { AuthModal } from './AuthModal';
 import { deleteCard } from '../services/cardService';
+import { CodeEditor } from './CodeEditor';
 import './CardDetail.css';
 
 interface CardDetailProps {
@@ -92,7 +93,15 @@ export function CardDetail({ card, onClose, onCardUpdated }: CardDetailProps) {
           <div className="card-detail-content-section">
             <h2>Code Implementation</h2>
             <div className="card-detail-code">
-              <pre><code>{card.code}</code></pre>
+              <div className="mt-4">
+                <CodeEditor 
+                  initialCode={card.code} 
+                  // Fallback to python if language is missing
+                  language={card.language || 'python'} 
+                  // Optional: Add logic to save changes if you want users to edit permanently
+                  // onChange={(newCode) => console.log(newCode)} 
+                />
+              </div>
             </div>
             {card.classification === 'data-structures' && card.methods && card.methods.length > 0 ? (
               <div className="card-detail-complexity">

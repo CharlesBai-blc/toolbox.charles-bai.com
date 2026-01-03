@@ -1,5 +1,5 @@
 export type CardClassification = 'sorts' | 'searches' | 'algorithms' | 'heuristics' | 'patterns' | 'data-structures';
-
+export type CardLanguage = 'python' | 'javascript' | 'c' | 'cpp' | 'java' | 'go' | 'rust';
 export type CardDifficulty = 'easy' | 'medium' | 'hard';
 
 export interface Method {
@@ -21,5 +21,6 @@ export interface Card {
   useCases?: string[];
   relatedProblems?: string[];
   dateAdded?: string; // ISO date string for sorting
+  language?: CardLanguage;
 }
 
