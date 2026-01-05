@@ -16,6 +16,9 @@ dist-ssr
 .env
 .env.local
 
+# Documentation (keep local)
+TECHNICAL_DOCUMENTATION.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
