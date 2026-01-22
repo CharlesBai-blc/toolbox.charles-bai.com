@@ -52,7 +52,7 @@ function App() {
         <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-4">
           <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-4">
             <div className="text-left w-full md:w-auto">
-              <h1 className="app-title mb-2 text-[4rem] md:text-[8rem] font-normal tracking-[0.2em] md:tracking-[0.25em] uppercase font-orbitron text-accent-blue max-w-full md:max-w-[50%] w-fit [text-shadow:0_0_20px_rgba(107,182,255,0.4),0_0_40px_rgba(107,182,255,0.2),0_2px_4px_rgba(0,0,0,0.2)]">
+              <h1 className="text-text-primary">
                 TOOLBOX
               </h1>
               <p className="m-0 text-sm md:text-sm text-text-tertiary font-normal">A collection of algorithms, patterns, and techniques for LeetCode-style problems</p>
