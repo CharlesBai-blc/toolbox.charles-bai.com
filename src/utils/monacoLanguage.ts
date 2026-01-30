@@ -1,5 +1,3 @@
-import type { CardLanguage } from '../types/card';
-
 /**
  * Maps application language codes to Monaco Editor language IDs
  * @param language - Application language code
